@@ -110,3 +110,110 @@ SELECT 1::int AS id,
            ), 
            3857
        )::geometry AS geom;
+
+
+-- ==========================================
+--- 7. ST_LineInterpolatePoint (Distance Segment) ---
+-- Finds a point at a specific fraction (0.5 = 50%) along a line.
+-- ==========================================
+
+-- General Query
+SELECT ST_AsText(ST_LineInterpolatePoint(
+    ST_SetSRID(ST_MakeLine(ST_MakePoint(78.4, 17.3), ST_MakePoint(78.5, 17.3)), 4326), 
+    0.5
+));
+
+-- Map Layer Version
+SELECT 1::int AS id, 
+       ST_Transform(
+           ST_LineInterpolatePoint(
+               ST_SetSRID(ST_MakeLine(ST_MakePoint(78.4, 17.3), ST_MakePoint(78.5, 17.3)), 4326), 
+               0.5
+           ), 3857
+       )::geometry AS geom;
+
+
+-- ==========================================
+--- 8. ST_ClosestPoint (Nearest Search) ---
+-- Finds the point on a line closest to an external point (78.45, 17.4).
+-- ==========================================
+
+-- General Query
+SELECT ST_AsText(ST_ClosestPoint(
+    ST_SetSRID(ST_MakeLine(ST_MakePoint(78.4, 17.3), ST_MakePoint(78.5, 17.3)), 4326), 
+    ST_SetSRID(ST_MakePoint(78.45, 17.4), 4326)
+));
+
+-- Map Layer Version
+SELECT 1::int AS id, 
+       ST_Transform(
+           ST_ClosestPoint(
+               ST_SetSRID(ST_MakeLine(ST_MakePoint(78.4, 17.3), ST_MakePoint(78.5, 17.3)), 4326), 
+               ST_SetSRID(ST_MakePoint(78.45, 17.4), 4326)
+           ), 3857
+       )::geometry AS geom;
+
+
+-- ==========================================
+--- 9. ST_ConvexHull (Outer Boundary) ---
+-- Generates a polygon that encloses a set of points (like a rubber band).
+-- ==========================================
+
+-- General Query
+SELECT ST_AsText(ST_ConvexHull(
+    ST_GeomFromText('MULTIPOINT(78.4 17.3, 78.5 17.3, 78.45 17.4)', 4326)
+));
+
+-- Map Layer Version
+SELECT 1::int AS id, 
+       ST_Transform(
+           ST_ConvexHull(ST_GeomFromText('MULTIPOINT(78.4 17.3, 78.5 17.3, 78.45 17.4)', 4326)), 
+           3857
+       )::geometry AS geom;
+
+
+-- ==========================================
+--- 10. ST_Within (Spatial Relationship) ---
+-- Returns true if the point is inside the envelope.
+-- ==========================================
+
+-- General Query
+SELECT ST_Within(
+    ST_SetSRID(ST_MakePoint(5, 5), 4326), 
+    ST_MakeEnvelope(0, 0, 10, 10, 4326)   
+);
+
+-- Map Layer Version (Using a subquery)
+SELECT 1::int AS id, 
+       ST_Transform(point_geom, 3857)::geometry AS geom 
+FROM (
+    SELECT ST_SetSRID(ST_MakePoint(78.45, 17.35), 4326) AS point_geom,
+           ST_MakeEnvelope(78.4, 17.3, 78.5, 17.4, 4326) AS poly_geom
+) AS sub 
+WHERE ST_Within(point_geom, poly_geom);
+
+
+-- ==========================================
+--- 11. GIST Index (Speed Performance) ---
+-- Creates a spatial index to significantly speed up geographic searches and filtering operations.
+-- ==========================================
+
+-- Step 1: Table Creation
+CREATE TABLE my_practice_points (
+    id serial PRIMARY KEY,
+    name varchar(50),
+    geom geometry(Point, 4326)
+);
+
+-- Step 2: Data Insertion
+INSERT INTO my_practice_points (name, geom) 
+VALUES ('Point A', ST_SetSRID(ST_MakePoint(78.4, 17.3), 4326));
+
+-- Step 3: Index Creation (Optimization)
+CREATE INDEX my_spatial_gist_idx ON my_practice_points USING GIST (geom);
+
+-- Step 4: Spatial Search using the index operator (&&)
+SELECT id, 
+       ST_Transform(geom, 3857)::geometry AS geom
+FROM my_practice_points
+WHERE geom && ST_MakeEnvelope(78.3, 17.2, 78.5, 17.4, 4326);
