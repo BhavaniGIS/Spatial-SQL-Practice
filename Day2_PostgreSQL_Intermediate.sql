@@ -30,3 +30,11 @@ HAVING COUNT(*) > 2;
 -- If 'name' is empty, it will show 'Unnamed Facility' instead of NULL.
 SELECT COALESCE(name, 'Unnamed Facility') AS clean_name, shop 
 FROM hyd_shops;
+
+-- 6.  Finding a Representative Row using DISTINCT ON
+-- Example: Get one specific name for every unique category. 
+-- Note: 'type' in DISTINCT ON must be the first column in 'ORDER BY'. 
+
+SELECT DISTINCT ON (type) type, name 
+FROM hyd_shops 
+ORDER BY type;
