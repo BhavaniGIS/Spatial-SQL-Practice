@@ -14,4 +14,4 @@ Hi, I'm Bhavani 👋
 * Successfully upskilled in **QGIS** (Beginner to Intermediate level) through independent self-learning.
 
 ### 🚀 Future Roadmap
-* Aspiring to learn **QGIS Model Designer** and **PyQGIS** for workflow automation.
+* Aspiring to learn ArcGIS, QGIS Model Designer, and PyQGIS for workflow automation.
