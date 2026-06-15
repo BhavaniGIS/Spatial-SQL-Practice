@@ -1,6 +1,6 @@
 # Bhavani | GIS Analyst | Spatial Data Professional
 Hi, I'm Bhavani 👋
-Welcome to my learning repository! This project serves as a digital portfolio showcasing my completed spatial database workflows (PostgreSQL/PostGIS) and my ongoing journey in learning Core Python and PyQGIS.
+Welcome to my learning repository! This project serves as a digital portfolio showcasing my completed spatial database workflows (PostgreSQL/PostGIS) and my ongoing journey in learning PyQGIS.
 
 ---
 
@@ -8,10 +8,10 @@ Welcome to my learning repository! This project serves as a digital portfolio sh
 * **4+ years of experience** in Apple GIS & Apple Maps projects (Designing Route Maps for Autonomous Cars).
 
 ### 🛠️ Current Focus (Self-Learning)
-* Actively learning Core Python and PyQGIS to build strong programming and geospatial development skills.
+* Actively learning PyQGIS to build strong programming and geospatial development skills.
   
 ### ✅ Completed Upskilling
-* Successfully upskilled in **QGIS** (Beginner to Intermediate level) through independent self-learning.
+* Successfully upskilled in **QGIS** through independent self-learning.
 * Mastered PostgreSQL & PostGIS: Successfully completed intensive self-learning by writing advanced spatial SQL queries and designing efficient database workflows.
 
 ### 🚀 Future Roadmap
